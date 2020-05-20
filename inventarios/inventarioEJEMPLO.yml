@@ -1,0 +1,21 @@
+--- # las rallitas simulan un nuevo fichero. es para no tener tantos archivos .yml
+name: Instalar base de datos 
+    clave2: 
+        clave22: valor22
+        clave23: valor23
+---
+name: Instalar servidores web
+    tarea: 
+        clave31: valor31
+        clave32: valor32
+        clave33: 2345
+    clave10: 
+        hola: adios
+        adios: hola
+        
+---
+clave30: valor30
+---
+listo:fin
+    
+
