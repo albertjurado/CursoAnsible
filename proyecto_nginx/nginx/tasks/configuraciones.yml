@@ -1,0 +1,13 @@
+
+
+- name: tarea posinstalacion 2  # clonar web
+  git:
+    repo: 'https://albertjurado:{{password_github}}@github.com/albertjurado/web.git'
+    dest: "{{ nginx_web_path }}"
+
+- name: tarea posinstalacion 1  # copiar configuracion de nginx
+  template:
+    src: templates/minginx.conf
+    dest: /etc/nginx/conf.d/minginx.conf
+    mode: '0400'
+  notify: nginx_reconfigurado

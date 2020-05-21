@@ -1,0 +1,8 @@
+---
+
+
+- name: tarea posinstalacion 4  # Reiniciar servicio nginx
+  service:
+     name: nginx
+     state: restarted
+  listen: nginx_reconfigurado

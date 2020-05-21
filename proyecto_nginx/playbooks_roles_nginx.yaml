@@ -1,0 +1,33 @@
+
+# ansible-playbook -i inventarios/inventario1.yml playbooks/playbook_roles1.yaml
+# Paso 1:
+ # Instalaciones:
+  # Nginx
+  # Curl
+# Paso 2: [Modulo git]
+ # Repo nuevo (fuera de Ansible)   https://github.com/albertjurado/web.git
+ # index.html: Soy el fichero de la web
+ # Ansible
+ # Copiar una web de github <- git clone index.html
+    # /web
+# Paso 2.5
+ # Crear variables
+   # ruta_web: /www
+   # puerto: 80
+# Paso 3: [Modulo template]
+ # Crear un fichero de configuración para nginx basado en una plantilla
+  # Cambios en la plantilla: 
+     # Puerto 81
+     # Ruta donde está la web: -> /web
+#Paso 4: Playbook
+ # Pongais valores nuevos para las variables 
+   # ruta_web: /web
+   # puerto: 81
+
+- hosts: ubuntu01 # alias de grupo o de servidor
+#Opciones de conexion
+  remote_user: root
+
+  roles:
+    - nginx
+     
