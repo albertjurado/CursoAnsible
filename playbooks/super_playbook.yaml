@@ -73,17 +73,103 @@
             msg: "Me ejecuto normalmente 2"
       changed_when: True
       notify: mievento
+
+     # Una tarea que explota
+    - name: Mi tarea explosiva
+      shell:
+            cmd: umane
+      ignore_errors: True
+      failed_when: explosiva.rc > 200
+      register: explosiva
+  
+       # Una tarea normalita
+    - name: Otra tarea
+      debug:
+            msg: "{{ explosiva.stdout }}"
+      when: explosiva.rc == 0
       
+### Expresiones para utilizar en los when: when, failed_when, changed_when
+#
+#   Expresiones sobre tareas que se han ejecutado
+#       explosiva is failed
+#       explosiva is succeded
+#       explosiva is skippped
+#       explosiva is changed
+#
+#   Otras explresiones utiles sobre variables (incluyendo tareas que se hayan ejecutado):
+#       mivariable is defined
+#       mivariable is undefined or mivariable == False
+    
   
       
+         # Una tarea comprobadora
+    - name: Una tarea que comprueba un texto
+      debug:
+            msg: La salida de error de la tarea explosiva continene 'not found'
+      #when: "'not found' in explosiva.stderr" 
+      #when: "'found' not in explosiva.stderr" 
+      #when: explosiva.stderr is match(".*not.*")       # con expresiones regulares
+      #Regex:                                           MIRAR HTTPS://REGEX101.COM
+      # ^ Comienzo de texto
+      # $ Final de texto
+      when: explosiva.stderr is search("n.t f..nd")
+   
+   # Nuestra primera tarea en bucle!!
+   
+    - name: Primer bucle
+      debug:
+            msg: "Ahora voy a hacer algo con el puerto: {{ item }} "
+      loop: "{{ puertos }}"
+      vars:
+        puertos:
+            - 80
+            - 81
+            - 83
+
+    - name: Lista procesadores
+      debug:
+            msg: "Ahora voy a hacer una lista con los procesadores: {{ item }} "
+      loop: "{{ ansible_facts.processor }}"
+      loop_control:
+        index_var: procesador
+      when: (procesador+1) % 3 == 0
+     
       
-      
-      
-      
-      
-      
-      
+##################################################################################################################################
+# Filtros jinja2
+#
+# abs, attr, batch, capitalize, center, default, dictsort, escape, filesizeformat, first, float, forceescape, format, 
+# groupby, indent, int, join, last, length, list, lower, map, max, min, pprint, random, reject, rejectattr, replace, 
+# reverse, round, safe, select, selectattr, slice, sort, string, striptags, sum, title, tojson, trim, truncate, unique, 
+# upper, urlencode, urlize, wordcount, wordwrap, xmlattr
+#
+# Uso {{ variable | upper }}
+#
+# https://jinja.palletsprojects.com/en/2.11.x/templates/#builtin-filters
+ 
+        
+####################################################################################################################################        
+        
+        
+# Variables dentro de loops
+# ansible_loop.allitems       La lista de todos los elementos en el bucle
+# ansible_loop.index          La iteración actual del bucle. (comenzando en 1)
+# ansible_loop.index0         La iteración actual del bucle. (comenzando en 0)
+# ansible_loop.revindex       El número de iteraciones hasta acabar el bucle (comenzando en 1)
+# ansible_loop.revindex0      El número de iteraciones hasta acabar el bucle (comenzando en 0)
+# ansible_loop.first          Verdadero si es la primera iteración
+# ansible_loop.last           Verdadero si es la última iteración
+# ansible_loop.length         El número de elementos en el bucle
+# ansible_loop.previtem       El elemento de la iteración anterior del bucle. Indefinido durante la primera iteración.
+# ansible_loop.nextitem       El elemento de la siguiente iteración del bucle. Indefinido durante la última iteración.
+
+#####################################################################################################################################   
     
+    
+    
+      
+      
+      
   handlers:
         #Una tarea opcional
         - name: tarea opcional
